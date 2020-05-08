@@ -12,12 +12,16 @@ export class TokenService {
   constructor() { }
 
   async saveToken(value: string) {
-    await Storage.set({key: 'blynkToken', value});
+    await Storage.set({ key: 'blynkToken', value });
   }
 
-  async loadToken(): Promise<string> {
-    const item = await Storage.get({key: 'blynkToken'});
-    return item.value;
+  getToken(): Observable<any> {
+    return from(this.loadToken());
+  }
+
+  private async loadToken(): Promise<string> {
+    const item = await Storage.get({ key: 'blynkToken' });
+    return item.value || '';
   }
 
 }

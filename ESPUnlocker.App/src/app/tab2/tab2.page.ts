@@ -13,7 +13,7 @@ export class Tab2Page implements OnInit {
   constructor(private tokenService: TokenService) {}
 
   ngOnInit(): void {
-    from(this.tokenService.loadToken()).subscribe(t => this.blynkToken = t);
+    this.tokenService.getToken().subscribe(t => this.blynkToken = t);
   }
 
   save() {
