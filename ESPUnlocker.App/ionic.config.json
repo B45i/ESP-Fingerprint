@@ -1,0 +1,7 @@
+{
+  "name": "ESPUnlocker.App",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
