@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TokenService } from '../services/token.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
 
-  constructor() {}
+  blynkToken = '';
+  constructor(private tokenService: TokenService) {}
+
+  ngOnInit(): void {
+    from(this.tokenService.loadToken()).subscribe(t => this.blynkToken = t);
+  }
+
+  save() {
+    this.tokenService.saveToken(this.blynkToken);
+  }
 
 }

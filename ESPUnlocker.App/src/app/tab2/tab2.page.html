@@ -7,29 +7,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Settings</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-
-  <form onsubmit="processForm(event)">
+  <form>
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       <ion-item>
-        <ion-label position="stacked">Blynk Token<ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text"></ion-input>
+        <ion-label position="stacked">Blynk Token<ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-input required minlength="5" type="text" name="token" [(ngModel)]="blynkToken"></ion-input>
       </ion-item>
     </ion-list>
   </form>
 
-      <!-- <div class="ion-padding">
-        <ion-button expand="block" type="submit" class="ion-no-margin">Save</ion-button>
-      </div> -->
-
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button disabled=true>
-          <ion-icon name="save"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [disabled]="blynkToken.length < 5" (click)="save()">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
