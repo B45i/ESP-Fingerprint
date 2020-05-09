@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Plugins } from "@capacitor/core";
+import { Plugins } from '@capacitor/core';
 import { from, Observable, of } from 'rxjs';
 
 const { Storage } = Plugins;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenService {
-
-  constructor() { }
+  constructor() {}
 
   async saveToken(value: string) {
     await Storage.set({ key: 'blynkToken', value });
@@ -23,5 +22,4 @@ export class TokenService {
     const item = await Storage.get({ key: 'blynkToken' });
     return item.value || '';
   }
-
 }
