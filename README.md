@@ -1,0 +1,1 @@
+Download signed APK form [here](https://github.com/B45i/ESP-Fingerprint/blob/master/ESPUnlocker.App/android/app/release/app-release.apk)
