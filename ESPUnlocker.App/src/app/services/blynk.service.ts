@@ -19,9 +19,9 @@ export class BlynkService {
 
   toggleLock(value: boolean) {
     if (value) {
-      this.authorizeUnlock();
-    } else {
       this.updateServer(false);
+    } else {
+      this.authorizeUnlock();
     }
   }
 
@@ -42,9 +42,16 @@ export class BlynkService {
           this.http.get(`http://blynk-cloud.com/${x}/update/V0?value=${value}`)
         )
       )
-      .subscribe((r) => {
-        this.showToast(`${value ? 'Locked' : 'Unlocked'} Successfully`);
-      });
+      .subscribe(
+        (r) => {
+          this.showToast(`${value ? 'Locked' : 'Unlocked'} Successfully`);
+        },
+        (err) => {
+          console.error('BLYNK');
+          console.error(err);
+          this.showToast(err.message);
+        }
+      );
   }
 
   private authorizeUnlock() {
