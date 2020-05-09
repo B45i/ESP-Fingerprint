@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
+import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth/ngx';
+
 import { TokenService } from './token.service';
 import { flatMap } from 'rxjs/operators';
 
@@ -8,12 +10,20 @@ import { flatMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class BlynkService {
-  private token: string;
   constructor(
     private http: HttpClient,
     private toastController: ToastController,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private androidFingerprintAuth: AndroidFingerprintAuth
   ) {}
+
+  toggleLock(value: boolean) {
+    if (value) {
+      this.authorizeUnlock();
+    } else {
+      this.updateServer(false);
+    }
+  }
 
   private showToast(message: string) {
     this.toastController
@@ -24,7 +34,7 @@ export class BlynkService {
       .then((toast) => toast.present());
   }
 
-  toggleLock(value: boolean) {
+  private updateServer(value: boolean) {
     this.tokenService
       .getToken()
       .pipe(
@@ -35,5 +45,36 @@ export class BlynkService {
       .subscribe((r) => {
         this.showToast(`${value ? 'Locked' : 'Unlocked'} Successfully`);
       });
+  }
+
+  private authorizeUnlock() {
+    this.androidFingerprintAuth
+      .isAvailable()
+      .then((fp) => {
+        if (fp.isAvailable) {
+          this.androidFingerprintAuth
+            .encrypt({
+              clientId: 'ESPUnlocker',
+            })
+            .then((result) => {
+              if (result.withFingerprint || result.withBackup) {
+                this.updateServer(true);
+              } else {
+                this.showToast('Authentication failed');
+              }
+            })
+            .catch((error) => {
+              if (
+                error ===
+                this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED
+              ) {
+                this.showToast('Fingerprint authentication cancelled');
+              }
+            });
+        } else {
+          this.showToast(`ingerprint auth isn't available`);
+        }
+      })
+      .catch((error) => console.error(error));
   }
 }
