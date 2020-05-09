@@ -1,16 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Lock
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content [fullscreen]="true" class="vertical-align-content">
+    <div class="container">
+      <ion-button size="large" color="success" expand="block" (click)="blynkService.toggleLock(true)">
+        <ion-icon slot="icon-only" name="lock-closed"></ion-icon>
+      </ion-button>
+    <ion-button size="large" color="danger" expand="block" (click)="blynkService.toggleLock(false)">
+      <ion-icon slot="icon-only" name="lock-open"></ion-icon>
+    </ion-button>
+  </div>
 </ion-content>
