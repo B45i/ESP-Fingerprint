@@ -47,8 +47,6 @@ export class BlynkService {
           this.showToast(`${value ? 'Locked' : 'Unlocked'} Successfully`);
         },
         (err) => {
-          console.error('BLYNK');
-          console.error(err);
           this.showToast(err.message);
         }
       );
