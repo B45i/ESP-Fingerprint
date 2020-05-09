@@ -19,7 +19,7 @@ export class BlynkService {
 
   toggleLock(value: boolean) {
     if (value) {
-      this.updateServer(false);
+      this.updateServer(true);
     } else {
       this.authorizeUnlock();
     }
@@ -39,7 +39,7 @@ export class BlynkService {
       .getToken()
       .pipe(
         flatMap((x) =>
-          this.http.get(`http://blynk-cloud.com/${x}/update/V0?value=${value}`)
+          this.http.get(`http://blynk-cloud.com/${x}/update/V0?value=${value ? 1 : 0}`) // ? blynk cant parse boolean
         )
       )
       .subscribe(
@@ -63,7 +63,7 @@ export class BlynkService {
             })
             .then((result) => {
               if (result.withFingerprint || result.withBackup) {
-                this.updateServer(true);
+                this.updateServer(false);
               } else {
                 this.showToast('Authentication failed');
               }
